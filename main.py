@@ -12,7 +12,7 @@ with open("users.json", "r") as f:
     USERS = json.load(f)
 
 # MongoDB connection
-MONGO_URI = "mongodb+srv://orcohen19081999:Wtq0icojQ9EVM5qM@cryptologscluster.33uurnz.mongodb.net/?retryWrites=true&w=majority&appName=CryptoLogsCluster"
+MONGO_URI = "mongodb+srv://orcohen19081999:Wtq0icojQ9EVM5qM@cryptologscluster.33uurnz.mongodb.net/?retryWrites=true&w=majority&tlsAllowInvalidCertificates=true"
 client = MongoClient(MONGO_URI)
 db = client.crypto_logs
 wallet_logs = db.wallet_logs
@@ -114,4 +114,4 @@ def clean_wallet_logs():
             print(f"[{wallet[:12]}...] → cleaned.")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

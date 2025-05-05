@@ -1,19 +1,36 @@
-.home-page {
-    background: radial-gradient(circle at center, #0e0e2c, #151540);
+.home-container {
+    max-width: 600px;
+    margin: 60px auto;
+    background-color: #1b1b3a;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(123, 97, 255, 0.2);
+}
+
+.home-container h1 {
     color: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding-top: 80px;
+    font-size: 32px;
+    margin-bottom: 20px;
 }
 
-.homepage-title {
-    font-size: 48px;
-    font-weight: bold;
-    color: #7b61ff;
-    text-shadow: 0 0 12px #7b61ff;
-}
-
-.homepage-sub {
-    font-size: 20px;
-    margin-top: 15px;
+.home-container p {
     color: #cccccc;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.home-container button {
+    background-color: #7b61ff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.home-container button:hover {
+    background-color: #5a43cc;
 }
