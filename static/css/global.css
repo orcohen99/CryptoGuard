@@ -1,0 +1,72 @@
+/* GLOBAL STYLE - Inspired by or */
+body {
+    background-color: #0e0e2c;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 20px;
+    color: #e0e0e0;
+}
+
+nav {
+    background-color: #151540;
+    padding: 15px 30px;
+    margin: -20px -20px 30px -20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+nav a {
+    margin-right: 20px;
+    color: #7b61ff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+nav a:hover {
+    color: #ffffff;
+}
+
+/* Form container */
+form {
+    background-color: #1b1b3a;
+    padding: 25px;
+    border-radius: 12px;
+    width: 340px;
+    margin: 30px auto;
+    box-shadow: 0 0 15px rgba(123, 97, 255, 0.3);
+}
+
+/* Inputs */
+input {
+    background-color: #2a2a4f;
+    color: #e0e0e0;
+    border: 1px solid #7b61ff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+/* Buttons */
+button {
+    background-color: #7b61ff;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background-color: #5a43cc;
+}
+
+/* Headings */
+h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 25px;
+    color: #ffffff;
+}

@@ -1,0 +1,19 @@
+.dashboard-page {
+    background: radial-gradient(circle at center, #141e30, #243b55);
+    color: #f4f4f4;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-page h2 {
+    font-size: 30px;
+    margin-top: 40px;
+    color: #00ffff;
+    text-shadow: 0 0 10px #00ffff;
+}
+
+.dashboard-page p {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 15px;
+    color: #d0d0d0;
+}

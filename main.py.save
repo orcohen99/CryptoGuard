@@ -1,0 +1,55 @@
+from flask import Flask, render_template, request, redirect, url_for
+import requests
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return render_template('home.html', page_class='home-page')
+
+@app.route('/reg', methods=['GET', 'POST'])
+def register():
+    print(">>> You are in /reg")  # Debug
+    if request.method == 'POST':
+        return redirect(url_for('dashboard'))
+    return render_template('reg.html', page_class='register-page')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    print(">>> You are in /login")  # Debug
+    if request.method == 'POST':
+        return redirect(url_for('dashboard'))
+    return render_template('login.html', page_class='login-page')
+
+@app.route('/dashboard')
+def dashboard():
+    wallet_address = "0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe"  # כתובת Ethereum לדוגמה
+
+    transactions = get_wallet_transactions(wallet_address)
+
+    return render_template(
+        'dashboard.html',
+        page_class='dashboard-page',
+        transactions=transactions
+    )
+
+
+def get_wallet_transactions(address):
+    api_key = "7PV9E2NFPWE3E7EG2SN1ZGYS3G35NV3XBJ"
+    url = f"https://api.etherscan.io/api?module=account&action=txlist&address={address}&sort=desc&apikey={api_key}"
+
+    response = requests.get(url)
+    data = response.json()
+
+    if data["status"] == "1":
+        return data["result"]
+    else:
+        return []
+from datetime import datetime
+
+@app.template_filter('datetimeformat')
+def datetimeformat(value):
+    return datetime.fromtimestamp(int(value)).strftime('%Y-%m-%d %H:%M:%S')
+
+if __name__ == '__main__':
+    app.run(debug=True)

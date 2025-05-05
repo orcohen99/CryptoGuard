@@ -1,0 +1,32 @@
+{% extends 'header.html' %}
+
+{% block content %}
+  <h2>Stored Wallet Logs</h2>
+
+  {% if logs %}
+    <table border="1" cellpadding="10" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Hash</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Value</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for log in logs %}
+        <tr>
+          <td>{{ log.hash[:12] }}...</td>
+          <td>{{ log.from[:12] }}...</td>
+          <td>{{ log.to[:12] }}...</td>
+          <td>{{ (log.value | float) / 10**18 }}</td>
+          <td>{{ log.timeStamp | int | datetimeformat }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No logs found in MongoDB.</p>
+  {% endif %}
+{% endblock %}

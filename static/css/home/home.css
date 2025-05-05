@@ -1,0 +1,19 @@
+.home-page {
+    background: radial-gradient(circle at center, #0e0e2c, #151540);
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 80px;
+}
+
+.homepage-title {
+    font-size: 48px;
+    font-weight: bold;
+    color: #7b61ff;
+    text-shadow: 0 0 12px #7b61ff;
+}
+
+.homepage-sub {
+    font-size: 20px;
+    margin-top: 15px;
+    color: #cccccc;
+}

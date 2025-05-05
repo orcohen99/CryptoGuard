@@ -1,0 +1,40 @@
+.login-page {
+    background: linear-gradient(to bottom right, #1e1e2f, #2d2d44);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-page h2 {
+    text-align: center;
+    font-size: 28px;
+    color: #ffffff;
+    margin-top: 30px;
+    text-shadow: 0 0 5px #007bff;
+}
+
+.login-page form {
+    background-color: rgba(255, 255, 255, 0.04);
+    padding: 25px;
+    border-radius: 10px;
+    width: 320px;
+    margin: 40px auto;
+    box-shadow: 0 0 12px rgba(0, 123, 255, 0.3);
+    backdrop-filter: blur(6px);
+}
+
+.login-page input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #007bff;
+    color: white;
+}
+
+.login-page button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.login-page button:hover {
+    background-color: #0056b3;
+}
