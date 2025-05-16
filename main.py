@@ -1,10 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, request, jsonify, session
+from flask_cors import CORS
 import requests
 import json
 from pymongo import MongoClient
 from datetime import datetime
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 app.secret_key = "any-secret-key"  # required for session
 
 # Load users
@@ -17,68 +19,65 @@ client = MongoClient(MONGO_URI)
 db = client.crypto_logs
 wallet_logs = db.wallet_logs
 
-@app.route('/')
-def home():
-    return render_template('home.html', page_class='home-page')
-
-@app.route('/reg', methods=['GET', 'POST'])
-def register():
-    print(">>> You are in /reg")
-    if request.method == 'POST':
-        return redirect(url_for('dashboard'))
-    return render_template('reg.html', page_class='register-page')
-
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/api/login', methods=['POST'])
 def login():
-    print(">>> You are in /login")
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    print(">>> API Login request")
+    data = request.json
+    username = data.get('username')
+    password = data.get('password')
 
-        user = USERS.get(username)
-        if user and user["password"] == password:
-            session['username'] = username
-            session['wallet'] = user["wallet"]
-            return redirect(url_for('dashboard'))
-        else:
-            return "Login failed. Invalid username or password."
+    user = USERS.get(username)
+    if user and user["password"] == password:
+        session['username'] = username
+        session['wallet'] = user["wallet"]
+        return jsonify({
+            "success": True,
+            "username": username,
+            "wallet": user["wallet"]
+        })
+    else:
+        return jsonify({
+            "success": False,
+            "message": "Invalid username or password"
+        }), 401
 
-    return render_template('login.html', page_class='login-page')
-
-@app.route('/dashboard')
+@app.route('/api/dashboard')
 def dashboard():
-    print(">>> You are inside the /dashboard route")
-    print(">>> Wallet in session:", session.get('wallet'))
-
-    if 'wallet' not in session:
-        return redirect(url_for('login'))
-
-    wallet_address = session['wallet']
+    print(">>> API Dashboard request")
+    
+    # For API, we'll use a token-based approach instead of sessions
+    # For now, let's accept a wallet address as a parameter
+    wallet_address = request.args.get('wallet')
+    if not wallet_address:
+        return jsonify({"error": "Wallet address required"}), 400
 
     clean_wallet_logs()
-
     transactions = get_wallet_transactions(wallet_address)
 
     # Save transactions to MongoDB (avoid duplicates)
-    # Save only last 10 transactions to MongoDB (avoid duplicates)
     for tx in transactions[:10]:
         if not wallet_logs.find_one({"hash": tx["hash"]}):
             wallet_logs.insert_one(tx)
 
+    # Calculate total ETH sent
+    total_eth = sum(float(tx.get('value', 0)) for tx in transactions) / 1e18
 
+    return jsonify({
+        "wallet": wallet_address,
+        "transaction_count": len(transactions),
+        "total_eth_sent": round(total_eth, 4),
+        "transactions": transactions[:10]
+    })
 
-    return render_template(
-        'dashboard.html',
-        page_class='dashboard-page',
-        transactions=transactions
-    )
-
-
-@app.route('/logs')
+@app.route('/api/logs')
 def view_logs():
-    logs = wallet_logs.find().sort("timeStamp", -1).limit(50)
-    return render_template('logs.html', page_class='dashboard-page', logs=logs)
-
+    logs = list(wallet_logs.find().sort("timeStamp", -1).limit(50))
+    
+    # Convert ObjectId to string for JSON serialization
+    for log in logs:
+        log['_id'] = str(log['_id'])
+    
+    return jsonify(logs)
 
 def get_wallet_transactions(address):
     api_key = "7PV9E2NFPWE3E7EG2SN1ZGYS3G35NV3XBJ"
@@ -94,15 +93,10 @@ def get_wallet_transactions(address):
 
     print(">>> Received", len(data.get("result", [])), "transactions")
 
-
     if data["status"] == "1":
         return data["result"]
     else:
         return []
-
-@app.template_filter('datetimeformat')
-def datetimeformat(value):
-    return datetime.fromtimestamp(int(value)).strftime('%Y-%m-%d %H:%M:%S')
 
 def clean_wallet_logs():
     wallet_addresses = wallet_logs.distinct("to")
@@ -114,4 +108,4 @@ def clean_wallet_logs():
             print(f"[{wallet[:12]}...] → cleaned.")
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', port=5001)
