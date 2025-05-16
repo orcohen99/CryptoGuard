@@ -2,7 +2,7 @@
 
 {% block content %}
   <h2>Login Page</h2>
-  <form method="post">
+  <form method="post" id="loginForm">
     <label for="username">Username:</label>
     <input name="username" id="username" required><br>
 
@@ -11,4 +11,16 @@
 
     <button type="submit">Login</button>
   </form>
+  
+  <div id="loading-spinner" class="loading-spinner-container">
+    <div class="spinner"></div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function() {
+    document.getElementById('loading-spinner').style.display = 'flex';
+  });
+</script>
 {% endblock %}

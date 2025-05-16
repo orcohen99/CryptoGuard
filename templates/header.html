@@ -12,7 +12,7 @@
 
   <!-- Page-specific CSS -->
   {% if page_class == 'login-page' %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login/login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css/login.css') }}">
   {% elif page_class == 'home-page' %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home/home.css') }}">
   {% elif page_class == 'register-page' %}
@@ -68,7 +68,9 @@
   <hr>
 
   {% block content %}{% endblock %}
+
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% block scripts %}{% endblock %}
 
 </body>
 </html>
